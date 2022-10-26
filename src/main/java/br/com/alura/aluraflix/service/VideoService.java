@@ -1,5 +1,6 @@
 package br.com.alura.aluraflix.service;
 
+import br.com.alura.aluraflix.dto.request.RequestVideoDto;
 import br.com.alura.aluraflix.dto.response.ResponseVideoDto;
 import br.com.alura.aluraflix.model.VideoEntity;
 import br.com.alura.aluraflix.repository.VideoRepository;
@@ -28,5 +29,11 @@ public class VideoService {
         VideoEntity videoEntity = videoRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND));
         return modelMapper.map(videoEntity, ResponseVideoDto.class);
+    }
+
+    public ResponseVideoDto post(RequestVideoDto video) {
+        VideoEntity videoEntity = modelMapper.map(video, VideoEntity.class);
+        VideoEntity save = videoRepository.save(videoEntity);
+        return modelMapper.map(save, ResponseVideoDto.class);
     }
 }

@@ -1,15 +1,17 @@
 package br.com.alura.aluraflix.controller;
 
+import br.com.alura.aluraflix.dto.request.RequestVideoDto;
 import br.com.alura.aluraflix.dto.response.ResponseVideoDto;
 import br.com.alura.aluraflix.service.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import javax.validation.Valid;
+import java.net.URI;
 
 @RestController
 @RequestMapping("/videos")
@@ -28,5 +30,12 @@ public class VideoController {
     public ResponseEntity<ResponseVideoDto> getById(@PathVariable Long id) {
         ResponseVideoDto video = videoService.getById(id);
         return ResponseEntity.ok(video);
+    }
+
+    @PostMapping
+    public ResponseEntity<ResponseVideoDto> post(@RequestBody @Valid RequestVideoDto video, UriComponentsBuilder componentsBuilder) {
+        ResponseVideoDto videoDto = videoService.post(video);
+        URI uri = componentsBuilder.path("videos/{id}").buildAndExpand(videoDto.getId()).toUri();
+        return ResponseEntity.created(uri).body(videoDto);
     }
 }
