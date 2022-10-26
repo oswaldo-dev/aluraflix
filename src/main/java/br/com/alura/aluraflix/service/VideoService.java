@@ -44,4 +44,10 @@ public class VideoService {
         videoRepository.save(videoEntity);
         return modelMapper.map(videoEntity, ResponseVideoDto.class);
     }
+
+    public void delete(Long id) {
+        VideoEntity videoEntity = videoRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND));
+        videoRepository.delete(videoEntity);
+    }
 }
