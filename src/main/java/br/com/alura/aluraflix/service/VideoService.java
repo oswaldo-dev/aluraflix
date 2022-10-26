@@ -36,4 +36,12 @@ public class VideoService {
         VideoEntity save = videoRepository.save(videoEntity);
         return modelMapper.map(save, ResponseVideoDto.class);
     }
+
+    public ResponseVideoDto update(RequestVideoDto video, Long id) {
+        VideoEntity videoEntity = videoRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND));
+        modelMapper.map(video, videoEntity);
+        videoRepository.save(videoEntity);
+        return modelMapper.map(videoEntity, ResponseVideoDto.class);
+    }
 }

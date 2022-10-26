@@ -38,4 +38,10 @@ public class VideoController {
         URI uri = componentsBuilder.path("videos/{id}").buildAndExpand(videoDto.getId()).toUri();
         return ResponseEntity.created(uri).body(videoDto);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseVideoDto> update(@RequestBody @Valid RequestVideoDto video, @PathVariable Long id) {
+        ResponseVideoDto update = videoService.update(video, id);
+        return ResponseEntity.ok(update);
+    }
 }
